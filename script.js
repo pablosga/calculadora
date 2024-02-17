@@ -111,8 +111,10 @@ operadorPorcentaje.addEventListener("click", () => {
         num2 = parseFloat(num1) * num2 / 100;
         num2 = String(num2); 
     } else if (!operadorBas && num1) {
+        lineaSecundaria.textContent = num1 + "%";
         num1 = num1 / 100;
-        num1 = String(num1);
+        num1 = String(num1);    
+        lineaPrincipal.textContent = num1;
     }
 })
 
