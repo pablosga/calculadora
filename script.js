@@ -63,11 +63,13 @@ botonNumeros.forEach((numero) => numero.addEventListener("click", (e) => {
     else lineaPrincipal.textContent = (obtieneNum2(e.target.textContent));
 }));    
 
+
 let operadoresBasicos = Array.from(document.querySelectorAll(".basicos"));
 operadoresBasicos.forEach((operador) => operador.addEventListener("click", (e) => {
-    operadorBas = e.target.textContent;
-    lineaSecundaria.textContent = lineaPrincipal.textContent + (e.target.textContent);
-    lineaPrincipal.textContent = "";
+    if (operadorBas === "") {
+        operadorBas = e.target.textContent;
+        lineaSecundaria.textContent = lineaPrincipal.textContent + (e.target.textContent);
+        lineaPrincipal.textContent = "";}
 }));
 
 let operadorIgual = document.querySelector(".igual");
@@ -154,5 +156,6 @@ operadorPorcentaje.addEventListener("click", () => {
         num1 = String(num1);
     }
 })
+
 
 */
