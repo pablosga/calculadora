@@ -7,14 +7,14 @@ let lineaPrincipal = document.querySelector("h1");
 
 
 function obtieneNum1(num) {
-    if (num1.length <= 11) {
+    if (num1.length <= 12) {
         num1 += num;
         return num1;
     } else return num1;
 };
 
 function obtieneNum2(num) {
-    if (num2.length <= 11) {
+    if (num2.length <= 12) {
         num2 += num;
         return num2;
     } else return num2;
@@ -24,14 +24,14 @@ function obtieneResultado() {
     switch (operadorBas) {
         case "+":
             num1 = parseFloat(num1) + parseFloat(num2);
-            num1 = String(num1).slice(0, 11);
+            num1 = String(num1).slice(0, 12);
             num2 = "";
             operadorBas = "";
             return num1;
             break;
         case "-":
             num1 = parseFloat(num1) - parseFloat(num2);
-            num1 = String(num1).slice(0, 11);
+            num1 = String(num1).slice(0, 12);
             num2 = "";
             operadorBas = "";
             return num1;
@@ -45,7 +45,7 @@ function obtieneResultado() {
                 break;
             } else {
                 num1 = parseFloat(num1) / parseFloat(num2);
-                num1 = String(num1).slice(0, 11);
+                num1 = String(num1).slice(0, 12);
                 num2 = "";
                 operadorBas = "";
                 return num1;
@@ -53,7 +53,7 @@ function obtieneResultado() {
             }
         case "*":
             num1 = parseFloat(num1) * parseFloat(num2);
-            num1 = String(num1).slice(0, 11);
+            num1 = String(num1).slice(0, 12);
             num2 = "";
             operadorBas = "";
             return num1;
@@ -70,7 +70,7 @@ botonNumeros.forEach((numero) => numero.addEventListener("click", (e) => {
 
 let operadoresBasicos = Array.from(document.querySelectorAll(".basicos"));
 operadoresBasicos.forEach((operador) => operador.addEventListener("click", (e) => {
-    if (operadorBas === "" && num1) {
+    if (operadorBas === "" && num1 && num1 != "-") {
         operadorBas = e.target.textContent;
         lineaSecundaria.textContent = lineaPrincipal.textContent + (e.target.textContent);
         lineaPrincipal.textContent = "";}
@@ -78,9 +78,7 @@ operadoresBasicos.forEach((operador) => operador.addEventListener("click", (e) =
 
 let operadorIgual = document.querySelector(".igual");
 operadorIgual.addEventListener("click", () => {
-    if (!num1) lineaPrincipal.textContent = ("");
-    else if (num1 && !num2) lineaPrincipal.textContent = (num1);
-    else {
+    if (operadorBas && num2 && num2 !== "-") {
         lineaPrincipal.textContent = (obtieneResultado());
         lineaSecundaria.textContent = "";
     };
@@ -108,30 +106,48 @@ operadorLimpiar.addEventListener("click", () => {
 
 let operadorPorcentaje = document.querySelector(".porcentaje");
 operadorPorcentaje.addEventListener("click", () => {
-    if (num2 && (operadorBas == "/" || operadorBas == "*")) {
-        lineaPrincipal.textContent = lineaPrincipal.textContent + "%";
+    if (operadorBas && num2 && num2 !== "-") {
         num2 = num2 / 100;
-        num2 = String(num2).slice(0, 11); 
-    } else if (num2 && (operadorBas == "+" || operadorBas == "-")) {
-        lineaPrincipal.textContent = lineaPrincipal.textContent + "%";
-        num2 = parseFloat(num1) * num2 / 100;
-        num2 = String(num2).slice(0, 11); 
-    } else if (!operadorBas && num1) {
-        lineaSecundaria.textContent = num1 + "%";
+        num2 = String(num2).slice(0, 12);
+        lineaPrincipal.textContent = num2; 
+    } else if (!operadorBas && num1 && num1 !== "-") {
         num1 = num1 / 100;
-        num1 = String(num1).slice(0, 11);    
+        num1 = String(num1).slice(0, 12);    
         lineaPrincipal.textContent = num1;
     }
 })
 
 let operadorDecimal = document.querySelector(".decimal");
 operadorDecimal.addEventListener("click", () => {
-    if (lineaPrincipal.textContent && num2 == lineaPrincipal.textContent && num2.indexOf(".") == -1) {
+    if (lineaPrincipal.textContent !== "-" && lineaPrincipal.textContent && num2 == lineaPrincipal.textContent && num2.indexOf(".") == -1) {
         num2 += ".";
         lineaPrincipal.textContent = (num2);
-    } else if (lineaPrincipal.textContent && num1 == lineaPrincipal.textContent && num1.indexOf(".") == -1) {
+    } else if (lineaPrincipal.textContent !== "-" && lineaPrincipal.textContent && num1 == lineaPrincipal.textContent && num1.indexOf(".") == -1) {
         num1 += ".";
         lineaPrincipal.textContent = (num1);
+    }
+});
+
+let operadorNegativo = document.querySelector(".negativo");
+operadorNegativo.addEventListener("click", () => {
+    if (lineaPrincipal.textContent[0] === "-") {
+        if (lineaSecundaria.textContent === "") {
+            num1 = num1.slice(1);
+            lineaPrincipal.textContent = num1;
+        } else {
+            num2 = num2.slice(1);
+            lineaPrincipal.textContent = num2;
+        }
+    } else {
+        if (lineaSecundaria.textContent === "") {
+            num1 = "-" + num1;
+            num1 = num1.slice(0, 12);
+            lineaPrincipal.textContent = num1;
+        } else {
+            num2 = "-" + num2;
+            num2 = num2.slice(0, 12);
+            lineaPrincipal.textContent = num2;
+        }
     }
 });
 
@@ -165,5 +181,31 @@ operadorPorcentaje.addEventListener("click", () => {
     }
 })
 
+let operadorIgual = document.querySelector(".igual");
+operadorIgual.addEventListener("click", () => {
+    if (!num1) lineaPrincipal.textContent = ("");
+    else if (num1 && !num2) lineaPrincipal.textContent = (num1);
+    else {
+        lineaPrincipal.textContent = (obtieneResultado());
+        lineaSecundaria.textContent = "";
+    };
+});
+
+let operadorPorcentaje = document.querySelector(".porcentaje");
+operadorPorcentaje.addEventListener("click", () => {
+    if (num2 && (operadorBas == "/" || operadorBas == "*")) {
+        lineaPrincipal.textContent = lineaPrincipal.textContent + "%";
+        num2 = num2 / 100;
+        num2 = String(num2).slice(0, 12); 
+    } else if (num2 && (operadorBas == "+" || operadorBas == "-")) {
+        lineaPrincipal.textContent = lineaPrincipal.textContent + "%";
+        num2 = parseFloat(num1) * num2 / 100;
+        num2 = String(num2).slice(0, 12); 
+    } else if (!operadorBas && num1 && num1 !== "-") {
+        num1 = num1 / 100;
+        num1 = String(num1).slice(0, 12);    
+        lineaPrincipal.textContent = num1;
+    }
+})
 
 */
