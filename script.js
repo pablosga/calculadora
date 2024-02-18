@@ -7,27 +7,31 @@ let lineaPrincipal = document.querySelector("h1");
 
 
 function obtieneNum1(num) {
-    num1 += num;
-    return num1;
+    if (num1.length <= 11) {
+        num1 += num;
+        return num1;
+    } else return num1;
 };
 
 function obtieneNum2(num) {
-    num2 += num;
-    return num2
+    if (num2.length <= 11) {
+        num2 += num;
+        return num2;
+    } else return num2;
 };
 
 function obtieneResultado() {
     switch (operadorBas) {
         case "+":
             num1 = parseFloat(num1) + parseFloat(num2);
-            num1 = String(num1);
+            num1 = String(num1).slice(0, 11);
             num2 = "";
             operadorBas = "";
             return num1;
             break;
         case "-":
             num1 = parseFloat(num1) - parseFloat(num2);
-            num1 = String(num1);
+            num1 = String(num1).slice(0, 11);
             num2 = "";
             operadorBas = "";
             return num1;
@@ -41,7 +45,7 @@ function obtieneResultado() {
                 break;
             } else {
                 num1 = parseFloat(num1) / parseFloat(num2);
-                num1 = String(num1);
+                num1 = String(num1).slice(0, 11);
                 num2 = "";
                 operadorBas = "";
                 return num1;
@@ -49,7 +53,7 @@ function obtieneResultado() {
             }
         case "*":
             num1 = parseFloat(num1) * parseFloat(num2);
-            num1 = String(num1);
+            num1 = String(num1).slice(0, 11);
             num2 = "";
             operadorBas = "";
             return num1;
@@ -66,7 +70,7 @@ botonNumeros.forEach((numero) => numero.addEventListener("click", (e) => {
 
 let operadoresBasicos = Array.from(document.querySelectorAll(".basicos"));
 operadoresBasicos.forEach((operador) => operador.addEventListener("click", (e) => {
-    if (operadorBas === "") {
+    if (operadorBas === "" && num1) {
         operadorBas = e.target.textContent;
         lineaSecundaria.textContent = lineaPrincipal.textContent + (e.target.textContent);
         lineaPrincipal.textContent = "";}
@@ -105,25 +109,27 @@ operadorLimpiar.addEventListener("click", () => {
 let operadorPorcentaje = document.querySelector(".porcentaje");
 operadorPorcentaje.addEventListener("click", () => {
     if (num2 && (operadorBas == "/" || operadorBas == "*")) {
+        lineaPrincipal.textContent = lineaPrincipal.textContent + "%";
         num2 = num2 / 100;
-        num2 = String(num2); 
+        num2 = String(num2).slice(0, 11); 
     } else if (num2 && (operadorBas == "+" || operadorBas == "-")) {
+        lineaPrincipal.textContent = lineaPrincipal.textContent + "%";
         num2 = parseFloat(num1) * num2 / 100;
-        num2 = String(num2); 
+        num2 = String(num2).slice(0, 11); 
     } else if (!operadorBas && num1) {
         lineaSecundaria.textContent = num1 + "%";
         num1 = num1 / 100;
-        num1 = String(num1);    
+        num1 = String(num1).slice(0, 11);    
         lineaPrincipal.textContent = num1;
     }
 })
 
 let operadorDecimal = document.querySelector(".decimal");
 operadorDecimal.addEventListener("click", () => {
-    if (num2 && num2.indexOf(".") == -1) {
+    if (lineaPrincipal.textContent && num2 == lineaPrincipal.textContent && num2.indexOf(".") == -1) {
         num2 += ".";
         lineaPrincipal.textContent = (num2);
-    } else if (num1 && num1.indexOf(".") == -1) {
+    } else if (lineaPrincipal.textContent && num1 == lineaPrincipal.textContent && num1.indexOf(".") == -1) {
         num1 += ".";
         lineaPrincipal.textContent = (num1);
     }
