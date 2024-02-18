@@ -67,3 +67,7 @@ button {
 .fila { 
     margin: 4px;
 }
+
+button:hover {
+    background-color: #8a8a98;
+}
